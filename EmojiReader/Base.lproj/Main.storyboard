@@ -183,17 +183,26 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="zhm-c1-Wqm">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="LgH-Um-lYz"/>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="XGz-CN-IaW"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="LgH-Um-lYz">
+                            <connections>
+                                <segue destination="MVg-00-Wbk" kind="unwind" unwindAction="unwindSegoeWithSegue:" id="150-2e-jRz"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="XGz-CN-IaW">
+                            <connections>
+                                <segue destination="MVg-00-Wbk" kind="unwind" identifier="saveSegue" unwindAction="unwindSegoeWithSegue:" id="c9L-tS-0Fn"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="descriotionTextField" destination="ADi-Y4-zIV" id="30p-s0-yoc"/>
-                        <outlet property="emajiTextField" destination="SmO-Gp-MdZ" id="Ghk-Hd-SsH"/>
+                        <outlet property="emojiTextField" destination="SmO-Gp-MdZ" id="Ghk-Hd-SsH"/>
                         <outlet property="nameTextField" destination="1aH-D2-ge3" id="Ory-Vh-13w"/>
                         <outlet property="saveButton" destination="XGz-CN-IaW" id="anx-Wm-SUx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="utc-Ea-ExX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="MVg-00-Wbk" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2537.68115942029" y="-86.383928571428569"/>
         </scene>

@@ -22,6 +22,17 @@ class EmojiTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
     
+    @IBAction func unwindSegoe(segue: UIStoryboardSegue) {
+        guard segue.identifier == "saveSegue" else { return }
+        let sourceVC = segue.source as! NewEmojiTableViewController
+        let emoji = sourceVC.emoji
+        
+        
+        let newIndexPath = IndexPath(row: objects.count, section: 0)
+        objects.append(emoji)
+        tableView.insertRows(at: [newIndexPath], with: .fade)
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -38,29 +49,25 @@ class EmojiTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete // делет релизован по умолчанию вызвали для наглядности
-    }
-    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            objects.remove(at: indexPath.row) // удаление из массива
-            tableView.deleteRows(at: [indexPath], with: .fade) // удаление из таблицы
+            objects.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return true // добавили кнопку движения в ячейку с права
+        return true
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedEmoji = objects.remove(at: sourceIndexPath.row) // сохраняем удаленый элемент из массива в константу
-        objects.insert(movedEmoji, at: destinationIndexPath.row) // добавляем удаленый элемент в массив в нужном месте таблицы
-        tableView.reloadData() // перезагружаем таблицу для отображения перемещения
+        let movedEmoji = objects.remove(at: sourceIndexPath.row)
+        objects.insert(movedEmoji, at: destinationIndexPath.row)
+        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let done = donection(at: indexPath) // создаем константу в которую передаем функциию с работой по индуксу ячейки
+        let done = donection(at: indexPath)
         let fovourite = fovouriteAction(at: indexPath)
         return UISwipeActionsConfiguration(actions: [done, fovourite]) 
     }
@@ -70,22 +77,22 @@ class EmojiTableViewController: UITableViewController {
             (action, view, completion) in
             self.objects.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            completion(true) // указываем что дейсвие с кнопкой завершается
+            completion(true)
         }
-        action.backgroundColor = .systemGreen // устанавливем цвет кнопки
-        action.image = UIImage(systemName: "checkmark.circle") // устанавливаем картинку кнопки
+        action.backgroundColor = .systemGreen
+        action.image = UIImage(systemName: "checkmark.circle")
         return action
     }
     
     func fovouriteAction( at indexPath: IndexPath) -> UIContextualAction {
-        var object = objects[indexPath.row] // достаем обьект из массива
+        var object = objects[indexPath.row]
         let action = UIContextualAction(style: .normal, title: "Favourite") {
             (action, view, completion) in
-            object.isFavorite = !object.isFavorite // меняем его свойство на обратное значение
-            self.objects[indexPath.row] = object // заменяем в массиве элемент на новый измененный
+            object.isFavorite = !object.isFavorite
+            self.objects[indexPath.row] = object
             completion(true)
         }
-        action.backgroundColor = object.isFavorite ? .systemPurple : .systemGray // меняем цвет в зависимости от значения isFavorite
+        action.backgroundColor = object.isFavorite ? .systemPurple : .systemGray
         action.image = UIImage(systemName: "heart")
         return action
     }
